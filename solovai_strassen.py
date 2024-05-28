@@ -27,3 +27,9 @@ def jacobi(a, n):  # допоміжна функція для обчисленн
         return result  # якщо n дорівнює 1, повертаємо результат
     else:
         return 0  # інакше повертаємо 0
+
+    
+def is_pseudo_prime(x, p):  # перевірка псевдопростоти по модулю
+    jacobi_symbol = jacobi(x, p) % p  # обчислюємо символ Якобі і беремо залишок від ділення на p
+    power_res = pow(x, (p - 1) // 2, p)  # обчислюємо x^(p-1)/2 mod p
+    return jacobi_symbol == power_res or jacobi_symbol == power_res - p  # порівнюємо результати
