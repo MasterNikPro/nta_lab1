@@ -154,4 +154,46 @@ class IntegerFactorization:
 
         return None
 
+def is_prime(n):
 
+    if n <= 1:
+        return False
+    if n <= 3:
+        return True
+    if n % 2 == 0 or n % 3 == 0:
+        return False
+    i = 5
+    while i * i <= n:
+        if n % i == 0 or n % (i + 2) == 0:
+            return False
+        i += 6
+    return True
+
+def canonical_decomposition(n, k):
+
+    factors = {}
+
+    def decompose(n, k):
+        factorizer = IntegerFactorization(n, k)
+        result = factorizer.factorize()
+        if not result:
+            factors[n] = factors.get(n, 0) + 1
+            return
+        factor1, factor2 = result
+        for factor in [factor1, factor2]:
+            if is_prime(factor):
+                factors[factor] = factors.get(factor, 0) + 1
+            else:
+                decompose(factor, k)
+
+    decompose(n, k)
+    return factors
+
+if __name__ == '__main__':
+    n = 2500744714570633849
+    k = 15
+    start_time = time.time()
+    result = canonical_decomposition(n, k)
+    end_time = time.time() - start_time
+    print(f"Time taken: {end_time} seconds")
+    print(f"Canonical decomposition of {n}: {result}")
